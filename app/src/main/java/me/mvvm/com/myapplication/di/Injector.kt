@@ -1,11 +1,16 @@
 package me.mvvm.com.myapplication.di
 
 import me.mvvm.com.myapplication.AndroidApplication
+import me.mvvm.com.myapplication.builddate.di.BuildDateComponent
+import me.mvvm.com.myapplication.commonview.di.BuildDateModule
+import me.mvvm.com.myapplication.commonview.di.CommonComponent
+import me.mvvm.com.myapplication.commonview.di.FullCarsModule
 import me.mvvm.com.myapplication.mainscreen.di.MainComponent
-import me.mvvm.com.myapplication.mainscreen.di.MainModule
+import me.mvvm.com.myapplication.mainscreen.di.ManufactoredModule
+import me.mvvm.com.myapplication.manufactured.di.ManufacturedComponent
 
 /**
- * Created by Alexander Karpenko on 09.09.18.
+ * Created by Alexander Karpenko on 20.04.19
  * java.karpenko@gmail.com
  */
 
@@ -14,8 +19,10 @@ open class Injector {
 
     lateinit var component: AppComponent
 
-    var mainComponent: MainComponent? = null
-
+    private var mMainComponent: MainComponent? = null
+   private var mCommonComponent: CommonComponent? = null
+   private var mManufacturedComponent: ManufacturedComponent? = null
+    private var mBuildComponent: BuildDateComponent? = null
 
     companion object {
 
@@ -24,19 +31,32 @@ open class Injector {
         fun init(app: AndroidApplication?) {
             msInjector?.component = DaggerAppComponent.builder()
                     .appModule(AppModule(app))
-                    .roomModule(RoomModule(app))
-                    .networkApiModule(NetworkApiModule(app?.applicationContext))
+                    .networkApiModule(NetworkApiModule())
                     .build()
         }
 
     }
 
 
-    fun plusMainActivity(): MainComponent {
-        if (mainComponent == null) {
-            mainComponent = component.plus(MainModule())
+    fun plusCommonComponent(): CommonComponent {
+        if (mCommonComponent == null) {
+            mCommonComponent = component.plus(FullCarsModule())
         }
-        return mainComponent as MainComponent
+        return mCommonComponent as CommonComponent
+    }
+
+    fun plusManufacturedComponent(): ManufacturedComponent {
+        if (mManufacturedComponent == null) {
+            mManufacturedComponent = component.plus(ManufactoredModule())
+        }
+        return mManufacturedComponent as ManufacturedComponent
+    }
+
+    fun plusBuildComponent(): BuildDateComponent {
+        if (mBuildComponent == null) {
+            mBuildComponent = component.plus(BuildDateModule())
+        }
+        return mBuildComponent as BuildDateComponent
     }
 
 

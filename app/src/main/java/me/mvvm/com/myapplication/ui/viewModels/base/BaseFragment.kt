@@ -1,39 +1,35 @@
 package me.mvvm.com.myapplication.ui.viewModels.base
 
-import android.os.SystemClock
+import android.os.Bundle
+import android.support.annotation.AnimRes
+import android.support.annotation.IdRes
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
+
 
 /**
- * Created by Alexander Karpenko on 09.09.18.
+ * Created by Alexander Karpenko on 20.04.19
  * java.karpenko@gmail.com
  */
 
 abstract class BaseFragment : Fragment(){
 
-    private var mAddToBAckStack: Boolean = false
 
-    private var lastClickTime = SystemClock.elapsedRealtime()
-
-    fun show(fragmentManager: FragmentManager) {
-        show(fragmentManager, true)
+    fun Fragment.replaceFragmentSafely(fragment: Fragment,
+                                       tag: String,
+                                       allowStateLoss: Boolean = false,
+                                       bundle: Bundle,
+                                       @IdRes containerViewId: Int,
+                                       @AnimRes enterAnimation: Int = 0,
+                                       @AnimRes exitAnimation: Int = 0,
+                                       @AnimRes popEnterAnimation: Int = 0,
+                                       @AnimRes popExitAnimation: Int = 0) {
+        fragment.arguments = bundle
+        val ft = fragmentManager?.beginTransaction()?.setCustomAnimations(enterAnimation, exitAnimation, popEnterAnimation, popExitAnimation)?.replace(containerViewId, fragment)?.addToBackStack(tag)
+        if (!fragmentManager?.isStateSaved!!) {
+            ft?.commit()
+        } else if (allowStateLoss) {
+            ft?.commitAllowingStateLoss()
+        }
     }
-
-    fun show(fragmentManager: FragmentManager, addToBackStack: Boolean) {
-        this.mAddToBAckStack = addToBackStack
-        replaceFragment(fragmentManager, addToBackStack, getContainer())
-    }
-
-    private fun replaceFragment(fragmentManager: FragmentManager, addToBackStack: Boolean, container: Int) {
-        val transaction = fragmentManager.beginTransaction()
-        transaction.replace(container, this, getName())
-        if (addToBackStack)
-            transaction.addToBackStack(getName())
-        transaction.commitAllowingStateLoss()
-    }
-
-    abstract fun getName(): String
-
-    abstract fun getContainer(): Int
 
 }

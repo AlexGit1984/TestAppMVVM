@@ -1,4 +1,4 @@
-package me.mvvm.com.myapplication.mainscreen.di
+package me.mvvm.com.myapplication.commonview.di
 
 import javax.inject.Scope
 
@@ -8,4 +8,4 @@ import javax.inject.Scope
  */
 @Scope
 @kotlin.annotation.Retention(value = AnnotationRetention.RUNTIME)
-annotation class MainPageScope
+annotation class ThirdPageScope

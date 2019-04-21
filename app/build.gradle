@@ -6,10 +6,10 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         applicationId "me.mvvm.com.myapplication"
-        minSdkVersion 21
+        minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -37,11 +37,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField 'String', 'API_BASE_URL', '"http://postman-echo.com/"'
+            buildConfigField 'String', 'API_BASE_URL', '"http://api-aws-eu-qa-1.auto1-test.com/v1/car-types/"'
         }
 
         debug {
-            buildConfigField 'String', 'API_BASE_URL', '"http://postman-echo.com/"'
+            buildConfigField 'String', 'API_BASE_URL', '"http://api-aws-eu-qa-1.auto1-test.com/v1/car-types/"'
 
         }
     }
@@ -72,6 +72,8 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.5.1'
     implementation 'io.reactivex:rxandroid:1.2.1'
     implementation 'io.reactivex:rxkotlin:0.60.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
 
     def retrofit_version = '2.2.0'
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
@@ -93,8 +95,7 @@ dependencies {
     implementation "android.arch.lifecycle:reactivestreams:$arch_version"
     kapt "android.arch.lifecycle:compiler:$arch_version"
 
-    def room_version = '1.1.0-alpha1'
-    implementation "android.arch.persistence.room:runtime:$room_version"
-    implementation "android.arch.persistence.room:rxjava2:$room_version"
-    kapt "android.arch.persistence.room:compiler:$room_version"
+    // Paging
+    def paging = '1.0.1'
+    implementation "android.arch.paging:runtime:$paging"
 }

@@ -4,7 +4,7 @@ import dagger.Subcomponent
 import me.mvvm.com.myapplication.mainscreen.viewmodel.MainActivityVM
 
 /**
- * Created by Alexander Karpenko on 09.09.18.
+ * Created by Alexander Karpenko on 20.04.19
  * java.karpenko@gmail.com
  */
 @MainPageScope
