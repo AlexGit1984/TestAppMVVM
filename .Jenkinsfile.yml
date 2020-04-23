@@ -1,0 +1,41 @@
+
+stages:
+- build
+- test
+- release
+
+
+before_script:
+- export JAVA_HOME="/Applications/Android Studio 2/Contents/jre/jdk/Contents/Home"
+- export ANDROID_HOME="/Users/Alex/Library/Android/sdk"
+- export PATH="$JAVA_HOME/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$PATH"
+# ---------------------------------------------------------------------------- #
+# Enable CI Global Variable
+# ---------------------------------------------------------------------------- #
+- export JENKINS_HOME="TRUE"
+# -------------------------------------------------------------------------- #
+# Updating sdkmanager
+# -------------------------------------------------------------------------- #
+# - yes | $ANDROID_HOME/tools/bin/sdkmanager --update
+
+
+assembleDebug:
+  stage: build
+  script:
+    - ./gradlew clean assembleDebug
+  tags:
+    - Android
+
+apk_generation:
+  stage: release
+
+  script:
+    - ./gradlew clean assembleRelease
+  after_script:
+    - mv mobile/ui/build/outputs/apk/**/*.apk .
+  artifacts:
+    paths:
+    - ./*.apk
+    expire_in: 1 week
+  tags:
+    - Android
