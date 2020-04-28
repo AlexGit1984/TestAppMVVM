@@ -16,6 +16,9 @@ pipeline {
         }
         stage('Release') {
             steps {
+            timeout(time:5, unit: 'DAYS'){
+            input message: "Approve Prod?"
+            }
                 echo 'Deploying....'
             }
         }
